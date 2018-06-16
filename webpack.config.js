@@ -8,22 +8,33 @@ module.exports = {
         path: path.resolve(__dirname, './dist')
     },
     resolve: {
-            extensions: ['.jsx', '.js'],
+        extensions: ['.jsx', '.js'],
     },
     module: {
-        rules: [{
-            test: /\.css$/,
-            use: ['style-loader', 'css-loader']
-        }, {
-            test: /\.jsx?$/,
-            exclude: /node_modules/,
-            use: {
-                loader: 'babel-loader',
-                options: {
-                    presets: ['es2015', 'react']
+        rules: [
+            {
+                test: /\.css$/,
+                use:['style-loader','css-loader']
+            },
+            {
+                test: /\.jsx?$/,
+                exclude: /node_modules/,
+                use: {
+                    loader: 'babel-loader',
+                    options: {
+                        presets: ['es2015', 'react']
+                    }
                 }
-            }
-        }],
+            }/* ,
+            {
+                test: /\.(png|jpg|gif)$/,
+                use: [
+                    {
+                        loader: 'url-loader'
+                    }
+                ]
+            } */
+        ],
     },
     devtool: 'source-map',
     plugins: [

@@ -1,9 +1,193 @@
-body {
-    padding: 0;
-    margin: 0;
+/* css reset */
+
+body ,p,h1,h2,h3{
+  padding: 0;
+  margin: 0;
+}
+
+em,
+strong {
+  font-style: normal;
+  font-weight: normal;
+}
+
+ul,li {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
 }
 
 h1 {
-    text-align: center;
-    margin-top: 200px;
+  font-size: 18px;
 }
+
+h2 {
+  font-size: 16px;
+}
+
+h3 {
+  font-size: 14px;
+}
+
+img,
+button,
+input {
+  border: none;
+}
+
+a {
+  text-decoration: none;
+  color: #343434;
+}
+
+input {
+  outline: none;
+}
+
+input::-webkit-input-placeholder {
+  /* placeholder颜色  */
+   color: #979796;
+  /* placeholder字体大小  */
+   font-size: 0.2rem;  
+}
+.active{
+  color: #3AA2FF;
+}
+/* 头部样式 */
+
+html {
+  font-size: 100px;
+}
+
+.app {
+  padding: 0.1rem;
+  border: 1px solid #E7E7E8;
+}
+
+.m_header {
+  height: 0.5rem;
+  line-height: 0.5rem;
+}
+
+.search_wrap {
+  height: 0.5rem;
+  display: flex;
+  align-items: center;
+}
+
+.search_wrap input {
+  width: 100%;
+  ;
+  flex: 1;
+  height: 0.5rem;
+  line-height: 0.5rem;
+  border: 1px solid #E6E6E6;
+  border-right: none;
+  box-sizing: border-box;
+  padding-left: 0.4rem;
+  font-size: 0.2rem;
+  color: #9B9C9C;
+  /* background: url(./images/search.png) left center no-repeat; */
+  /* background-size: 12% 60%; */
+  /* background-position: 5% 50%; */
+}
+
+.search_wrap .icon_book {
+  position: absolute;
+  left: 0.2rem;
+  font-size: 0.2rem;
+  color: #B8B8B8;
+}
+
+.search_btn {
+  width: 0.5rem;
+  height: 0.5rem;
+  line-height: 0.5rem;
+  text-align: center;
+  color: #FFFFFF;
+  font-size: 0.18rem;
+  font-weight: bolder;
+  background-color: #3CA2FF;
+}
+/* header end */
+
+/* bodyList  */
+.con_list{
+  width: 100%;
+  margin-top:20px;
+}
+.con_list .item_img{
+  width: 0.7rem;
+  height: 1rem;
+}
+.con_list .item_info{
+  flex:1;
+  margin-left: 10px;
+}
+.con_list .con_item{
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #E2E2E2;
+  padding: 10px;
+  padding-right: 0;
+  display: flex;
+  font-size: 0.16rem;
+  font-weight: bold;
+  margin-bottom :10px;
+}
+.con_list .item_info ,.con_list .item_info p {
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.con_list .info_tags{
+  height: 0.28rem;
+}
+.con_list .info_tags>span{
+  display: inline-block;
+  padding: 3px 2px;
+  background-color: #F6C000;;
+  color:#FEF8E1;
+  margin-right: 5px;
+}
+    /* 电影tags颜色 */
+.con_list .danger>span{
+  background-color: #F52400;
+}
+/* bodylist end */
+
+/* footer  */
+.m_footer{
+  width: 100%;
+  height: 0.6rem;
+  position: fixed;
+  bottom:0;
+  left:0;
+  box-sizing: border-box;
+  padding: 5px 0;
+  background-color: #F6F6F6;
+}
+.m_footer .tabs{
+  display: flex;
+  justify-content:space-around;
+}
+.m_footer .tab_item{
+  flex:1;
+  text-align: center;
+}
+.m_footer .f_icon,.m_footer .icon_text{
+  display: block;
+}
+.m_footer .f_icon{
+  font-size: 0.25rem
+}
+.m_footer .icon_text{
+  font-size: 0.16rem;
+}
+/* footer end */
