@@ -47,7 +47,7 @@ export default class List extends Component {
   }
   render() {
     const movies = this.state.data.subjects || [];
-    return (
+    return ( 
       <ul className="con_list">
         {
           movies.map((item, index) => {
