@@ -1,9 +1,8 @@
-require('es6-promise').polyfill();
-import React, { Component } from 'react';
-import { Link } from 'react-router';
-import fetchJsonp from 'fetch-jsonp';
+import React, { Component } from 'react'
+import { Link } from 'react-router'
+import { fetchMovies } from '../utils/api'
 export default class List extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.state = {
       data: [],
@@ -13,7 +12,7 @@ export default class List extends Component {
       }
     }
   }
-  componentWillReceiveProps(newProps) {
+  componentWillReceiveProps (newProps) {
     console.log(newProps)
     if (newProps.searchStr) {
       this.setState({
@@ -22,43 +21,33 @@ export default class List extends Component {
           count: 10
         }
       }, () => {
-        const url =`https://api.douban.com/v2/movie/search?q=${this.state.query.q}&`
-        this.getList(url);
+        const url = `https://api.douban.com/v2/movie/search?q=${this.state.query.q}&`
+        this.getMovies(url, this.state.query.count)
       })
     }
-
   }
-  componentDidMount(url) {
-    const _this = this;
-    url = url || 'https://api.douban.com/v2/movie/top250?';
-    this.state.data&&this.state.data.length<=0&&this.getList(url)
+  componentDidMount (url) {
+    url = url || 'https://api.douban.com/v2/movie/top250?'
+    this.state.data && this.state.data.length <= 0 && this.getMovies(url, this.state.query.count)
   }
-  getList(url){
-    const _this = this;
-    fetchJsonp(`${url}count=${this.state.query.count}`)
-      .then(function (response) {
-        return response.json()
-      }).then(function (json) {
-        _this.setState({ data: json })
-        // window.localStorage.setItem('ch-movies',JSON.stringify(json))
-      }).catch(function (ex) {
-        console.log('parsing failed', ex)
-      })
+  async getMovies (url, page) {
+    const movie = await fetchMovies(url, page)
+    this.setState({data: movie})
   }
-  render() {
-    const movies = this.state.data.subjects || [];
-    return ( 
-      <ul className="con_list">
+  render () {
+    const movies = this.state.data.subjects || []
+    return (
+      <ul className='con_list'>
         {
           movies.map((item, index) => {
             return <li key={index}>
-              <Link to={`/detail/${JSON.stringify({id:item.id,kind:this.props.kind})}`} className="con_item">
-                <img className="item_img" src={`https://images.weserv.nl/?url=${item.images.small.slice(8)}`} alt={item.alt} />
-                <div className="item_info">
-                  <h2 className="info_title">
+              <Link to={`/detail/${JSON.stringify({id: item.id, kind: this.props.kind})}`} className='con_item'>
+                <img className='item_img' src={`https://images.weserv.nl/?url=${item.images.small.slice(8)}`} alt={item.alt} />
+                <div className='item_info'>
+                  <h2 className='info_title'>
                     {item.title}——{item.year}
                   </h2>
-                  <p className="info_tags danger">
+                  <p className='info_tags danger'>
                     {
                       item.genres.map((genre, count) => {
                         if (count < 3) {
@@ -68,14 +57,14 @@ export default class List extends Component {
                     }
 
                   </p>
-                  <p className="info_writer">
+                  <p className='info_writer'>
                     作者：{
                       item.casts.map((cast, i) => {
                         return <span key={i}>{cast.name} </span>
                       })
                     }
                   </p>
-                  <p className="info_score">
+                  <p className='info_score'>
                     评分：
                     {item.rating.average}
                   </p>
