@@ -6,7 +6,8 @@
   "scripts": {
     "test": "standard",
     "beatty":"standard --fix",
-    "dev": "webpack-dev-server "
+    "dev": "webpack-dev-server ",
+    "build":"webpack --progress --colors --devtool cheap-module-source-map"
   },
   "keywords": [],
   "author": "Kevin",

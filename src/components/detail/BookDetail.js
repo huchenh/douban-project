@@ -24,13 +24,13 @@ class BookDetail extends Component {
     }
   }
   componentDidMount () {
-    this.getBookInfo(this.state.url, this.props.id)
+    this.getBookInfo(this.props.kind, this.props.id)
   }
   handleGoBack () {
     window.history.go(-1)
   }
-  async getBookInfo (url, id) {
-    const data = await getInfo(url, id)
+  async getBookInfo (kind, id) {
+    const data = await getInfo(kind, id)
     this.setState({
       data
     })

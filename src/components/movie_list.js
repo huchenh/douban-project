@@ -8,7 +8,7 @@ export default class List extends Component {
       data: [],
       query: {
         q: '复仇者',
-        count: 20
+        count: 1
       }
     }
   }
@@ -18,24 +18,27 @@ export default class List extends Component {
       this.setState({
         query: {
           q: newProps.searchStr,
-          count: 10
+          count: 1
         }
       }, () => {
-        const url = `https://api.douban.com/v2/movie/search?q=${this.state.query.q}&`
-        this.getMovies(url, this.state.query.count)
+        const url = `http://sas.qq.com/cgi-bin/db/data?t=["ke_coding_movie"]&q={ke_coding_movie(_page:${this.state.query.count},_limit:10,title:"%25${this.state.query.q}%25"){id,title,rating{max,average,stars,min,details{score_1,score_2,score_3,score_4,score_5}},genres,casts{alt,avatars{small,large,medium},name,name_en,id},durations,mainland_pubdate,pubdates,has_video,collect_count,original_title,subtype,directors{alt,avatars{small,large,medium},name,id},year,images{small,large,medium},alt}}`
+        this.getMovies(url)
       })
     }
   }
-  componentDidMount (url) {
-    url = url || 'https://api.douban.com/v2/movie/top250?'
-    this.state.data && this.state.data.length <= 0 && this.getMovies(url, this.state.query.count)
+  // https://api.douban.com/v2/movie/search?q=${this.state.query.q}&
+  componentDidMount () {
+    //  url = url || 'https://api.douban.com/v2/movie/top250?'  top250 接口未提供
+    const url = `http://sas.qq.com/cgi-bin/db/data?t=["ke_coding_movie"]&q={ke_coding_movie(_page:${this.state.query.count},_limit:10,title:"%25${this.state.query.q}%25"){id,title,rating{max,average,stars,min,details{score_1,score_2,score_3,score_4,score_5}},genres,casts{alt,avatars{small,large,medium},name,name_en,id},durations,mainland_pubdate,pubdates,has_video,collect_count,original_title,subtype,directors{alt,avatars{small,large,medium},name,id},year,images{small,large,medium},alt}}`
+    // this.state.data && this.state.data.length <= 0 && this.getMovies(url, this.state.query.count)
+    this.getMovies(url)
   }
-  async getMovies (url, page) {
-    const movie = await fetchMovies(url, page)
+  async getMovies (url) {
+    const movie = await fetchMovies(url)
     this.setState({data: movie})
   }
   render () {
-    const movies = this.state.data.subjects || []
+    const movies = this.state.data || []
     return (
       <ul className='con_list'>
         {

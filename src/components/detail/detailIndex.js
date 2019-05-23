@@ -11,19 +11,19 @@ export default class DetailIndex extends Component {
     if (kind === 'books') {
       return (
         <div className='detail'>
-          <BookDetail id={id} />
+          <BookDetail id={id} kind ='books'/>
         </div>
       )
     } else if (kind === 'movies') {
       return (
-        <div className='detail'>
+        <div className='detail' kind ='movies'>
           <MovieDetail id={id} />
         </div>
       )
     } else {
       return (
         <div className='detail'>
-          <MusicDetail id={id} />
+          <MusicDetail id={id} kind ='musics'/>
         </div>
       )
     }

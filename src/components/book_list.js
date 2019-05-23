@@ -7,8 +7,8 @@ export default class List extends Component {
     this.state = {
       data: [],
       query: {
-        q: 'react',
-        count: 10
+        q: '腾讯',
+        count: 1
       }
     }
   }
@@ -18,7 +18,7 @@ export default class List extends Component {
     if (newProps.searchStr) {
       this.setState({query: {
         q: newProps.searchStr,
-        count: 20
+        count: 1
       }}, () => {
         // if(this.state.data && this.)
         this.getBooks(this.state.query.q, this.state.query.count)
@@ -35,7 +35,7 @@ export default class List extends Component {
     this.setState({ data: book })
   }
   render () {
-    const books = this.state.data.books || []
+    const books = this.state.data || []
     return (
       <ul className='con_list'>
         {

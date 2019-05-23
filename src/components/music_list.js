@@ -7,8 +7,8 @@ export default class MusicList extends Component {
     this.state = {
       data: [],
       query: {
-        q: '爱的太迟',
-        count: 20
+        q: '因你而在',
+        count: 1
       }
     }
   }
@@ -17,7 +17,7 @@ export default class MusicList extends Component {
     if (newProps.searchStr) {
       this.setState({query: {
         q: newProps.searchStr,
-        count: 10
+        count: 1
       }}, () => {
         this.getMusics(this.state.query.q, this.state.query.count)
       })
@@ -31,7 +31,7 @@ export default class MusicList extends Component {
     this.setState({data: music})
   }
   render () {
-    const musics = this.state.data.musics || []
+    const musics = this.state.data || []
     return (
       <ul className='con_list'>
         {
