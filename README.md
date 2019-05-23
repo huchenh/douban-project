@@ -1,11 +1,7 @@
 # 从零开始开发自己的口袋豆瓣
-在本章中，我们学会了许多非常实用的知识和技术：
-- 拥有强大字符串处理的正则表达式
-- 拉取后台数据的 `Ajax`
-- 无招胜有招的设计模式
-- 当前最热门的框架 `React`
 
-如今身兼十八般武艺的你，急需一场实战来验证这段时间的修炼成果。接下来下面将面临人生中的最艰难的一个任务：**实现口袋豆瓣应用**。下面是相关要求和说明。
+
+如今身兼十八般武艺的你，急需一场实战来验证这段时间的修炼成果。接下来下面将面临人生中的最艰难的一个任务：**实现口袋豆瓣应用**。
 
 
 ## 项目说明
@@ -22,7 +18,7 @@
     - 点击 item 展示详情页
     - 返回列表页等功能。
 
-2. 拉取豆瓣上的数据：[豆瓣 API](https://developers.douban.com/wiki/?title=api_v2)
+2. 拉取豆瓣上的数据
 3. 管理代码规范：[standard](https://standardjs.com/)
 4. 本应用的交互和设计不严格要求大家可以自由发挥，开发出属于自己的应用
 
@@ -70,31 +66,31 @@
 
 
 ## 2. 通过JSONP 拉取豆瓣数据
+### 豆瓣接口说明
+豆瓣开发者网站有许多接口的说明文档，大家需要根据看豆瓣文档中接口的数据格式说明来进行开发页面。本应用涉及的接口文档如下：
+
+2019-05-10更新：由于豆瓣开发者平台逐渐下架相关文档以及接口的访问权限，现通过平台接口提供数据访问服务，具体接口以及使用样例请查看以下文档的内容。
 使用豆瓣 API 接口，涉及到跨域问题，大家可通过 `JSONP` 方式解决。建议大家使用下面的 JSONP 拉取组件（React 体系中不建议 jQuery）：
 - [fetch-jsonp](https://github.com/camsong/fetch-jsonp)
-
-
-### 豆瓣接口说明
-[豆瓣开发者网站](https://developers.douban.com/wiki/?title=guide)有许多接口的说明文档，大家需要根据看豆瓣文档中接口的数据格式说明来进行开发页面。本应用涉及的接口文档如下：
 
 ### 图书相关
 - 拉取图书列表和搜索图书列表可使用下面的接口:
 
-  https://developers.douban.com/wiki/?title=book_v2#get_book_search
+  http://git.imweb.io/imweb-teacher/douban-api/blob/master/book.md
 
 ### 音乐相关
 - 拉取音乐列表和搜索音乐列表可使用下面的接口:
 
-  https://developers.douban.com/wiki/?title=music_v2#get_music_search
+  http://git.imweb.io/imweb-teacher/douban-api/blob/master/music.md
 
 ### 电影相关
 由于拉取电影列表接口有点特殊，涉及接口需要有两条：
 - 【拉取电影 top 250 列表】
 
-  https://developers.douban.com/wiki/?title=movie_v2#top250
+  http://git.imweb.io/imweb-teacher/douban-api/blob/master/movie_top.md
 - 【搜索电影】
 
-  https://developers.douban.com/wiki/?title=movie_v2#search
+  http://git.imweb.io/imweb-teacher/douban-api/blob/master/movie.md
 
 
 **注意：豆瓣 API 有权限和访问次数限制，单个 ip 限制每个小时 150 次，这个问题大家可查看[这里](https://developers.douban.com/wiki/?title=api_v2)的说明。因此建议大家在开发时把拉取到的数据存到本地，避免超过次数。**
@@ -107,8 +103,6 @@
 - [Standard - github 仓库](https://github.com/standard/standard)
 
 
-## 加分项
+## 待完成
 - 列表页实现**下拉刷新**以及**拉到底部加载更多**的功能
 
-## 最后
-本次项目可以说是一个从无都有的项目。因此需要大家考虑的东西也就更多。大家需要以一个项目 owner 的心态去开发出属于自己的 **口袋豆瓣**。许多资源和技术都需要大家通过自己去探索使用。最终说明下，如果中途遇到问题，不要轻易放弃。要始终相信自己是可以的！
