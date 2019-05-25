@@ -1148,15 +1148,19 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var configs = {
   'books': fetchBooks,
-  'movies': '',
-  'musics': ''
+  'movies': fetchMovies,
+  'musics': fetchMusics
 }; /*
      处理音乐、图书和电影的数据请求
    */
 
-async function fetchBooks(keyword, page) {
+async function fetchBooks(keyword, page, id) {
+  var url = 'http://sas.qq.com/cgi-bin/db/data?t=["ke_coding_book"]&q={ke_coding_book(_page:' + page + ',_limit:10,title:"%25' + keyword + '%25"){id,title,rating{max,numRaters,average,min},subtitle,author,pubdate,tags{count,name,title},origin_title,image,binding,translator,catalog,pages,images{small,large,medium},alt,publisher,isbn10,isbn13,url,alt_title,author_intro,summary,price,ebook_price,ebook_url,series{id,title}}}';
+  if (id) {
+    url = 'http://sas.qq.com/cgi-bin/db/data?t=["ke_coding_book"]&q={ke_coding_book(_page:' + page + ',_limit:10,title:"%25' + keyword + '%25",id:"' + id + '"){id,title,rating{max,numRaters,average,min},subtitle,author,pubdate,tags{count,name,title},origin_title,image,binding,translator,catalog,pages,images{small,large,medium},alt,publisher,isbn10,isbn13,url,alt_title,author_intro,summary,price,ebook_price,ebook_url,series{id,title}}}';
+  }
   try {
-    var response = await (0, _fetchJsonp2.default)('http://sas.qq.com/cgi-bin/db/data?t=["ke_coding_book"]&q={ke_coding_book(_page:' + page + ',_limit:10,title:"%25' + keyword + '%25"){id,title,rating{max,numRaters,average,min},subtitle,author,pubdate,tags{count,name,title},origin_title,image,binding,translator,catalog,pages,images{small,large,medium},alt,publisher,isbn10,isbn13,url,alt_title,author_intro,summary,price,ebook_price,ebook_url,series{id,title}}}');
+    var response = await (0, _fetchJsonp2.default)(url);
     var json = await response.json();
     return json.result;
   } catch (err) {
@@ -1164,19 +1168,38 @@ async function fetchBooks(keyword, page) {
   }
 }
 
-async function fetchMovies(url) {
+/* async function fetchMovies (url) {
   try {
-    var res = await (0, _fetchJsonp2.default)('' + url);
+    let res = await fetchJsonp(`${url}`)
+    let json = await res.json()
+    return json.result
+  } catch (err) {
+    console.error(err)
+  }
+} */
+
+async function fetchMovies(keyword, page, id) {
+  var url = 'http://sas.qq.com/cgi-bin/db/data?t=["ke_coding_movie"]&q={ke_coding_movie(_page:' + page + ',_limit:10,title:"%25' + keyword + '%25"){id,title,rating{max,average,stars,min,details{score_1,score_2,score_3,score_4,score_5}},genres,casts{alt,avatars{small,large,medium},name,name_en,id},durations,mainland_pubdate,pubdates,has_video,collect_count,original_title,subtype,directors{alt,avatars{small,large,medium},name,id},year,images{small,large,medium},alt}}';
+  if (id) {
+    url = 'http://sas.qq.com/cgi-bin/db/data?t=["ke_coding_movie"]&q={ke_coding_movie(_page:' + page + ',_limit:10,title:"%25' + keyword + '%25",id:"' + id + '"){id,title,rating{max,average,stars,min,details{score_1,score_2,score_3,score_4,score_5}},genres,casts{alt,avatars{small,large,medium},name,name_en,id},durations,mainland_pubdate,pubdates,has_video,collect_count,original_title,subtype,directors{alt,avatars{small,large,medium},name,id},year,images{small,large,medium},alt}}';
+  }
+  try {
+    var res = await (0, _fetchJsonp2.default)(url);
     var json = await res.json();
     return json.result;
   } catch (err) {
     console.error(err);
   }
 }
+
 // https://api.douban.com/v2/music/search?q=${keyword}&count=${page}
-async function fetchMusics(keyword, page) {
+async function fetchMusics(keyword, page, id) {
+  var url = 'http://sas.qq.com/cgi-bin/db/data?t=["ke_coding_music"]&q={ke_coding_music(_page:' + page + ',_limit:10,title:"%25' + keyword + '%25"){id,title,alt,rating{max,average,numRaters,min},author{name},alt_title,image,tags{count,name},mobile_link,attrs{publisher,singer,version,pubdate,title,media,tracks,discs}}}';
+  if (id) {
+    url = 'http://sas.qq.com/cgi-bin/db/data?t=["ke_coding_music"]&q={ke_coding_music(_page:' + page + ',_limit:10,title:"%25' + keyword + '%25",id:"' + id + '"){id,title,alt,rating{max,average,numRaters,min},author{name},alt_title,image,tags{count,name},mobile_link,attrs{publisher,singer,version,pubdate,title,media,tracks,discs}}}';
+  }
   try {
-    var res = await (0, _fetchJsonp2.default)('http://sas.qq.com/cgi-bin/db/data?t=["ke_coding_music"]&q={ke_coding_music(_page:' + page + ',_limit:10,title:"%25' + keyword + '%25"){id,title,alt,rating{max,average,numRaters,min},author{name},alt_title,image,tags{count,name},mobile_link,attrs{publisher,singer,version,pubdate,title,media,tracks,discs}}}');
+    var res = await (0, _fetchJsonp2.default)(url);
     var json = await res.json();
     return json.result;
   } catch (err) {
@@ -1194,11 +1217,13 @@ async function fetchMusics(keyword, page) {
   }
 } */
 
-async function getInfo(url, id) {
+async function getInfo(kind, keyword, page, id) {
+  var fetchKind = configs[kind];
   try {
-    var res = await (0, _fetchJsonp2.default)('' + url + id);
-    var json = await res.json();
-    return json;
+    // let res = await fetchJsonp(`${url}${id}`)
+    // let json = await res.json()
+    var json = await fetchKind(keyword, page, id);
+    return json[0];
   } catch (err) {
     console.error(err);
   }
@@ -33328,7 +33353,7 @@ var List = function (_Component) {
             { key: index },
             _react2.default.createElement(
               _reactRouter.Link,
-              { to: '/detail/' + JSON.stringify({ id: item.id, kind: _this3.props.kind }), className: 'con_item' },
+              { to: '/detail/' + JSON.stringify({ id: item.id, kind: _this3.props.kind, q: _this3.state.query.q, page: _this3.state.query.count }), className: 'con_item' },
               _react2.default.createElement('img', { className: 'item_img', src: 'https://images.weserv.nl/?url=' + item.images.small.slice(8) }),
               _react2.default.createElement(
                 'div',
@@ -33660,8 +33685,8 @@ var List = function (_Component) {
             count: 1
           }
         }, function () {
-          var url = 'http://sas.qq.com/cgi-bin/db/data?t=["ke_coding_movie"]&q={ke_coding_movie(_page:' + _this2.state.query.count + ',_limit:10,title:"%25' + _this2.state.query.q + '%25"){id,title,rating{max,average,stars,min,details{score_1,score_2,score_3,score_4,score_5}},genres,casts{alt,avatars{small,large,medium},name,name_en,id},durations,mainland_pubdate,pubdates,has_video,collect_count,original_title,subtype,directors{alt,avatars{small,large,medium},name,id},year,images{small,large,medium},alt}}';
-          _this2.getMovies(url);
+          /* const url = `http://sas.qq.com/cgi-bin/db/data?t=["ke_coding_movie"]&q={ke_coding_movie(_page:${this.state.query.count},_limit:10,title:"%25${this.state.query.q}%25"){id,title,rating{max,average,stars,min,details{score_1,score_2,score_3,score_4,score_5}},genres,casts{alt,avatars{small,large,medium},name,name_en,id},durations,mainland_pubdate,pubdates,has_video,collect_count,original_title,subtype,directors{alt,avatars{small,large,medium},name,id},year,images{small,large,medium},alt}}` */
+          _this2.getMovies(_this2.state.query.q, _this2.state.query.count);
         });
       }
     }
@@ -33673,12 +33698,12 @@ var List = function (_Component) {
       //  url = url || 'https://api.douban.com/v2/movie/top250?'  top250 接口未提供
       var url = 'http://sas.qq.com/cgi-bin/db/data?t=["ke_coding_movie"]&q={ke_coding_movie(_page:' + this.state.query.count + ',_limit:10,title:"%25' + this.state.query.q + '%25"){id,title,rating{max,average,stars,min,details{score_1,score_2,score_3,score_4,score_5}},genres,casts{alt,avatars{small,large,medium},name,name_en,id},durations,mainland_pubdate,pubdates,has_video,collect_count,original_title,subtype,directors{alt,avatars{small,large,medium},name,id},year,images{small,large,medium},alt}}';
       // this.state.data && this.state.data.length <= 0 && this.getMovies(url, this.state.query.count)
-      this.getMovies(url);
+      this.getMovies(this.state.query.q, this.state.query.count);
     }
   }, {
     key: 'getMovies',
-    value: async function getMovies(url) {
-      var movie = await (0, _api.fetchMovies)(url);
+    value: async function getMovies(keyword, page) {
+      var movie = await (0, _api.fetchMovies)(keyword, page);
       this.setState({ data: movie });
     }
   }, {
@@ -33696,7 +33721,7 @@ var List = function (_Component) {
             { key: index },
             _react2.default.createElement(
               _reactRouter.Link,
-              { to: '/detail/' + JSON.stringify({ id: item.id, kind: _this3.props.kind }), className: 'con_item' },
+              { to: '/detail/' + JSON.stringify({ id: item.id, kind: _this3.props.kind, q: _this3.state.query.q, page: _this3.state.query.count }), className: 'con_item' },
               _react2.default.createElement('img', { className: 'item_img', src: 'https://images.weserv.nl/?url=' + item.images.small.slice(8), alt: item.alt }),
               _react2.default.createElement(
                 'div',
@@ -33920,7 +33945,7 @@ var MusicList = function (_Component) {
             { key: index },
             _react2.default.createElement(
               _reactRouter.Link,
-              { to: '/detail/' + JSON.stringify({ id: item.id, kind: _this3.props.kind }), className: 'con_item' },
+              { to: '/detail/' + JSON.stringify({ id: item.id, kind: _this3.props.kind, q: _this3.state.query.q, page: _this3.state.query.count }), className: 'con_item' },
               _react2.default.createElement('img', { className: 'item_img', src: 'https://images.weserv.nl/?url=' + item.image.slice(8) }),
               _react2.default.createElement(
                 'div',
@@ -34017,23 +34042,25 @@ var DetailIndex = function (_Component) {
       var queryInfo = JSON.parse(this.props.params.data);
       var kind = queryInfo.kind;
       var id = queryInfo.id;
+      var keyword = queryInfo.q;
+      var page = queryInfo.page;
       if (kind === 'books') {
         return _react2.default.createElement(
           'div',
           { className: 'detail' },
-          _react2.default.createElement(_BookDetail2.default, { id: id, kind: 'books' })
+          _react2.default.createElement(_BookDetail2.default, { id: id, page: page, keyword: keyword, kind: 'books' })
         );
       } else if (kind === 'movies') {
         return _react2.default.createElement(
           'div',
-          { className: 'detail', kind: 'movies' },
-          _react2.default.createElement(_MovieDetail2.default, { id: id })
+          { className: 'detail' },
+          _react2.default.createElement(_MovieDetail2.default, { id: id, page: page, keyword: keyword, kind: 'movies' })
         );
       } else {
         return _react2.default.createElement(
           'div',
           { className: 'detail' },
-          _react2.default.createElement(_MusicDetail2.default, { id: id, kind: 'musics' })
+          _react2.default.createElement(_MusicDetail2.default, { id: id, page: page, keyword: keyword, kind: 'musics' })
         );
       }
     }
@@ -34149,7 +34176,7 @@ var BookDetail = function (_Component) {
   _createClass(BookDetail, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
-      this.getBookInfo(this.props.kind, this.props.id);
+      this.getBookInfo(this.props.kind, this.props.keyword, this.props.page, this.props.id);
     }
   }, {
     key: 'handleGoBack',
@@ -34158,8 +34185,8 @@ var BookDetail = function (_Component) {
     }
   }, {
     key: 'getBookInfo',
-    value: async function getBookInfo(kind, id) {
-      var data = await (0, _api.getInfo)(kind, id);
+    value: async function getBookInfo(kind, keyword, page, id) {
+      var data = await (0, _api.getInfo)(kind, keyword, page, id);
       this.setState({
         data: data
       });
@@ -34261,11 +34288,7 @@ var BookDetail = function (_Component) {
                 null,
                 '\u5E8F\u8A00'
               ),
-              _react2.default.createElement(
-                'p',
-                null,
-                data.catalog
-              )
+              _react2.default.createElement('p', { dangerouslySetInnerHTML: { __html: data.catalog } })
             ),
             _react2.default.createElement(
               'div',
@@ -34352,7 +34375,7 @@ var MovieDetail = function (_Component) {
   _createClass(MovieDetail, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
-      this.getMovieInfo(this.state.url, this.props.id);
+      this.getMovieInfo(this.props.kind, this.props.keyword, this.props.page, this.props.id);
     }
   }, {
     key: 'handleGoBack',
@@ -34361,8 +34384,8 @@ var MovieDetail = function (_Component) {
     }
   }, {
     key: 'getMovieInfo',
-    value: async function getMovieInfo(url, id) {
-      var data = await (0, _api.getInfo)(url, id);
+    value: async function getMovieInfo(kind, keyword, page, id) {
+      var data = await (0, _api.getInfo)(kind, keyword, page, id);
       this.setState({
         data: data
       });
@@ -34535,7 +34558,7 @@ var MusicDetail = function (_Component) {
   _createClass(MusicDetail, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
-      this.getMusicInfo(this.state.url, this.props.id);
+      this.getMusicInfo(this.props.kind, this.props.keyword, this.props.page, this.props.id);
     }
   }, {
     key: 'handleGoBack',
@@ -34544,8 +34567,8 @@ var MusicDetail = function (_Component) {
     }
   }, {
     key: 'getMusicInfo',
-    value: async function getMusicInfo(url, id) {
-      var data = await (0, _api.getInfo)(url, id);
+    value: async function getMusicInfo(kind, keyword, page, id) {
+      var data = await (0, _api.getInfo)(kind, keyword, page, id);
       this.setState({
         data: data
       });

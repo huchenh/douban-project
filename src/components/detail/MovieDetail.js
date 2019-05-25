@@ -24,13 +24,13 @@ class MovieDetail extends Component {
     }
   }
   componentDidMount () {
-    this.getMovieInfo(this.state.url, this.props.id)
+    this.getMovieInfo(this.props.kind, this.props.keyword,this.props.page,this.props.id)
   }
   handleGoBack () {
     window.history.go(-1)
   }
-  async getMovieInfo (url, id) {
-    const data = await getInfo(url, id)
+  async getMovieInfo (kind, keyword,page,id) {
+    const data = await getInfo(kind, keyword,page,id)
     this.setState({
       data
     })

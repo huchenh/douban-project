@@ -24,13 +24,13 @@ class MusicDetail extends Component {
     }
   }
   componentDidMount () {
-    this.getMusicInfo(this.state.url, this.props.id)
+    this.getMusicInfo(this.props.kind, this.props.keyword,this.props.page,this.props.id)
   }
   handleGoBack () {
     window.history.go(-1)
   }
-  async getMusicInfo (url, id) {
-    const data = await getInfo(url, id)
+  async getMusicInfo (kind, keyword,page,id) {
+    const data = await getInfo(kind, keyword,page,id)
     this.setState({
       data
     })

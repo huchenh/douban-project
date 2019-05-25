@@ -24,13 +24,13 @@ class BookDetail extends Component {
     }
   }
   componentDidMount () {
-    this.getBookInfo(this.props.kind, this.props.id)
+    this.getBookInfo(this.props.kind, this.props.keyword,this.props.page,this.props.id)
   }
   handleGoBack () {
     window.history.go(-1)
   }
-  async getBookInfo (kind, id) {
-    const data = await getInfo(kind, id)
+  async getBookInfo (kind, keyword,page,id) {
+    const data = await getInfo(kind, keyword,page,id)
     this.setState({
       data
     })
@@ -73,7 +73,7 @@ class BookDetail extends Component {
           <div className='detail-all'>
             <div>
               <h2>序言</h2>
-              <p>{data.catalog}</p>
+              <p dangerouslySetInnerHTML={{__html: data.catalog}}></p>
             </div>
             <div>
               <h2>简介</h2>

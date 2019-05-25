@@ -41,7 +41,7 @@ export default class List extends Component {
         {
           books.map((item, index) => {
             return <li key={index}>
-              <Link to={`/detail/${JSON.stringify({id: item.id, kind: this.props.kind})}`} className='con_item'>
+              <Link to={`/detail/${JSON.stringify({id: item.id, kind: this.props.kind,q:this.state.query.q,page: this.state.query.count})}`} className='con_item'>
                 <img className='item_img' src={`https://images.weserv.nl/?url=${item.images.small.slice(8)}`} />
                 <div className='item_info'>
                   <h2 className='info_title'>
